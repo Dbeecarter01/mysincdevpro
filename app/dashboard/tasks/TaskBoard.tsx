@@ -141,19 +141,20 @@ export default function TaskBoard() {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className={`mb-3 p-4 rounded-lg shadow border transition-all duration-300 ${cardColors[task.task_status]} ${isFlashing ? 'ring-2 ring-indigo-500' : ''}`}
+                            className={`mb-3 p-4 rounded-lg shadow border transition-all duration-300 ${cardColors[task.task_status]} ${isEditing ? 'bg-indigo-50 border-indigo-300' : ''} ${isFlashing ? 'ring-2 ring-indigo-500' : ''}`}
                           >
                             <div className="flex flex-col gap-2 w-full">
                               <div className="flex justify-between items-center">
                                 {isEditing ? (
                                   <input
-                                    className="w-full rounded border px-2 py-1"
+                                    className="w-full rounded border px-2 py-1 bg-white border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400"
                                     value={editedText}
                                     onChange={(e) => setEditedText(e.target.value)}
                                   />
                                 ) : (
                                   <span>{task.task_name}</span>
                                 )}
+
                                 <div className="flex gap-2 ml-2">
                                   {isEditing ? (
                                     <>
