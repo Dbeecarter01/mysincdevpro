@@ -20,8 +20,8 @@ export default function AuthPage() {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // Handle query params
+  const [loggedIn, setLoggedIn] = useState(false);
+  
   useEffect(() => {
     const prefillEmail = searchParams.get('prefill');
     const signupSuccess = searchParams.get('signup') === 'success';
@@ -31,12 +31,28 @@ export default function AuthPage() {
       setEmail(prefillEmail || '');
       setSuccessMessage('Signup successful! Please log in.');
 
-      // Clean the URL
       setTimeout(() => {
         router.replace('/auth');
       }, 100);
     }
   }, [searchParams, router]);
+
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setLoggedIn(true);
+      }
+    };
+    checkSession();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setLoggedIn(false);
+    router.refresh(); 
+  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
